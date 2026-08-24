@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "check:format": "oxfmt --check src index.html package.json tsconfig.json vite.config.ts",
+    "check": "pnpm run check:format && pnpm run typecheck && pnpm run build",
     "preview": "vite preview",
     "format": "oxfmt"
   },
