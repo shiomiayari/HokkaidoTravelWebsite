@@ -23,6 +23,8 @@ export default function App() {
 
   const [selectedSpot, setSelectedSpot] = useState<string | null>(null)
 
+  const [todayDay, setTodayDay] = useState(1)
+
   const [savedSpots, setSavedSpots] = useState<Set<string>>(
     new Set(["otaru-bine", "otaru-canal"]),
   )
@@ -34,6 +36,12 @@ export default function App() {
       setPrevPage(page)
 
       if (to === "spot" && spotId) setSelectedSpot(spotId)
+
+      if (to === "today" && spotId?.startsWith("day-")) {
+        const requestedDay = Number(spotId.replace("day-", ""))
+
+        if (requestedDay >= 1 && requestedDay <= 4) setTodayDay(requestedDay)
+      }
 
       setPage(to)
     },
@@ -90,6 +98,7 @@ export default function App() {
           {page === "home" && <Home onNavigate={navigate} />}
           {page === "today" && (
             <Today
+              initialDay={todayDay}
               onNavigate={navigate}
               savedSpots={savedSpots}
               onToggleSave={toggleSave}

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState } from "react"
 
 import { motion, useScroll, useTransform, useInView } from "framer-motion"
 
@@ -60,8 +60,8 @@ export default function Home({ onNavigate }: Props) {
           style={{ y: heroY, scale: heroScale }}
         >
           <img
-            src="https://images.unsplash.com/photo-1545105511-839f4a45a030?w=900&h=1300&fit=crop&auto=format&q=85"
-            alt="北海道の風景"
+            src="/images/otaru-canal-night.jpg"
+            alt="ガス灯がともる夜の小樽運河"
             className="w-full h-full object-cover"
             onLoad={() => setHeroLoaded(true)}
             style={{ filter: "brightness(0.72) saturate(1.1)" }}
@@ -88,7 +88,7 @@ export default function Home({ onNavigate }: Props) {
               animate={heroLoaded ? { opacity: 1 } : {}}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              FUMIRI × KAZUYA
+              AYARI × KAZUYA
             </motion.div>
             <motion.h1
               className="font-display text-white leading-none mt-3"
@@ -100,7 +100,7 @@ export default function Home({ onNavigate }: Props) {
                 ease: [0.16, 1, 0.3, 1],
               }}
               style={{
-                fontSize: "clamp(72px, 22vw, 96px)",
+                fontSize: "clamp(60px, 18vw, 78px)",
                 fontStyle: "italic",
                 fontWeight: 200,
               }}
@@ -117,7 +117,7 @@ export default function Home({ onNavigate }: Props) {
                 ease: [0.16, 1, 0.3, 1],
               }}
               style={{
-                fontSize: "clamp(72px, 22vw, 96px)",
+                fontSize: "clamp(56px, 17vw, 74px)",
                 fontStyle: "italic",
                 fontWeight: 200,
               }}
@@ -125,13 +125,13 @@ export default function Home({ onNavigate }: Props) {
               HOKKAIDO
             </motion.h1>
             <motion.div
-              className="font-mono text-white/70 mt-4"
+              className="font-display text-white/80 mt-5"
               initial={{ opacity: 0 }}
               animate={heroLoaded ? { opacity: 1 } : {}}
               transition={{ delay: 0.9, duration: 0.8 }}
-              style={{ fontSize: 11, letterSpacing: "0.2em" }}
+              style={{ fontSize: 15, letterSpacing: "0.08em" }}
             >
-              01 — 04 SEP 2026
+              2026&nbsp;&nbsp;9/1 – 9/4
             </motion.div>
           </div>
 
@@ -141,25 +141,15 @@ export default function Home({ onNavigate }: Props) {
               animate={heroLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 1.1, duration: 0.8 }}
             >
-              <div className="flex gap-8 mb-6">
-                {[
-                  ["4", "DAYS"],
-                  ["2", "CITIES"],
-                  ["1", "TRIP"],
-                ].map(([n, l]) => (
-                  <div key={l}>
-                    <div
-                      className="font-display text-white font-light"
-                      style={{ fontSize: 36, fontStyle: "italic" }}
-                    >
-                      {n}
-                    </div>
-                    <div className="label text-white/60">{l}</div>
-                  </div>
-                ))}
+              <div
+                className="font-display text-white/90 leading-none mb-7"
+                style={{ fontSize: 30, fontStyle: "italic", fontWeight: 300 }}
+              >
+                <div>SAPPORO</div>
+                <div className="mt-2">OTARU</div>
               </div>
               <motion.button
-                onClick={() => onNavigate("today")}
+                onClick={() => onNavigate("today", "day-1")}
                 className="flex items-center gap-3"
                 whileTap={{ scale: 0.96 }}
               >
@@ -191,7 +181,10 @@ export default function Home({ onNavigate }: Props) {
       </div>
 
       {/* ── INTRO ────────────────────────────────────── */}
-      <section className="px-6 py-16">
+      <section
+        className="relative z-10 px-6 pb-16 pt-24"
+        style={{ background: "var(--color-paper)" }}
+      >
         <div className="label mb-6" style={{ color: "var(--color-blue)" }}>
           THE JOURNEY
         </div>
@@ -221,28 +214,28 @@ export default function Home({ onNavigate }: Props) {
               src: "photo-1741225235666-5fd931fd40e1",
               label: "SAPPORO",
               rotate: "-2deg",
+              day: 1,
             },
 
             {
               src: "photo-1609831353201-3e31d35cc985",
               label: "OTARU",
               rotate: "1.5deg",
+              day: 3,
             },
-
-            {
-              src: "photo-1672110233006-1366586fa08a",
-              label: "JOURNEY",
-              rotate: "-1deg",
-            },
-          ].map(({ src, label, rotate }) => (
-            <div
+          ].map(({ src, label, rotate, day }) => (
+            <motion.button
               key={src}
-              className="polaroid flex-none"
+              type="button"
+              onClick={() => onNavigate("today", `day-${day}`)}
+              className="polaroid flex-none text-left"
               style={{
-                width: 140,
+                width: "calc(50% - 6px)",
                 scrollSnapAlign: "center",
                 transform: `rotate(${rotate})`,
               }}
+              whileTap={{ scale: 0.97 }}
+              aria-label={`${label}のおすすめスポットを見る`}
             >
               <img
                 src={`https://images.unsplash.com/${src}?w=300&h=380&fit=crop&auto=format&q=80`}
@@ -255,7 +248,7 @@ export default function Home({ onNavigate }: Props) {
               >
                 {label}
               </div>
-            </div>
+            </motion.button>
           ))}
         </div>
       </section>
@@ -348,9 +341,9 @@ export default function Home({ onNavigate }: Props) {
 
               { sub: "ARRIVE", city: "新千歳", detail: "新千歳空港" },
 
-              { sub: "DAY 01 — 02", city: "SAPPORO", detail: "札幌" },
+              { sub: "1日目 — 2日目", city: "札幌", detail: "札幌市" },
 
-              { sub: "DAY 02 — 04", city: "OTARU", detail: "小樽" },
+              { sub: "2日目 — 4日目", city: "小樽", detail: "小樽市" },
             ].map(({ sub, city, detail }, i) => (
               <motion.div
                 key={city}
@@ -365,8 +358,12 @@ export default function Home({ onNavigate }: Props) {
                   {sub}
                 </div>
                 <div
-                  className="font-display text-white"
-                  style={{ fontSize: 22, fontStyle: "italic" }}
+                  className="font-sans text-white"
+                  style={{
+                    fontSize: 21,
+                    fontWeight: 500,
+                    letterSpacing: "0.08em",
+                  }}
                 >
                   {city}
                 </div>
@@ -429,7 +426,7 @@ export default function Home({ onNavigate }: Props) {
           ].map(({ day, city, sub, img, color }) => (
             <motion.button
               key={day}
-              onClick={() => onNavigate("today")}
+              onClick={() => onNavigate("today", `day-${Number(day)}`)}
               className="relative flex-none overflow-hidden"
               style={{
                 width: 180,
@@ -515,8 +512,17 @@ export default function Home({ onNavigate }: Props) {
           className="label mt-1"
           style={{ fontSize: 9, color: "var(--color-beige)", opacity: 0.6 }}
         >
-          FUMIRI × KAZUYA · SEP 2026
+          AYARI × KAZUYA · SEP 2026
         </div>
+        <a
+          href="https://commons.wikimedia.org/wiki/File:Otaru_Canal_HDR1.jpg"
+          target="_blank"
+          rel="noreferrer"
+          className="mt-3 inline-block font-sans"
+          style={{ fontSize: 9, color: "var(--color-beige)" }}
+        >
+          Hero photo: Tan Wei Liang Byorn / Wikimedia Commons / CC BY-SA 4.0
+        </a>
       </section>
     </div>
   )
