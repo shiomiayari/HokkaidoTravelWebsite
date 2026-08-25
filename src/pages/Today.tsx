@@ -9,6 +9,8 @@ import { spots } from "../data/spots"
 type Page = "home" | "today" | "map" | "saved" | "spot"
 
 interface Props {
+  initialDay?: number
+
   onNavigate: (p: Page, id?: string) => void
 
   savedSpots: Set<string>
@@ -112,8 +114,13 @@ function Badge({ type }: { type: "FIX" | "PLAN" | "OPTION" }) {
   )
 }
 
-export default function Today({ onNavigate, savedSpots, onToggleSave }: Props) {
-  const [activeDay, setActiveDay] = useState(3)
+export default function Today({
+  initialDay = 1,
+  onNavigate,
+  savedSpots,
+  onToggleSave,
+}: Props) {
+  const [activeDay, setActiveDay] = useState(initialDay)
 
   const [dayTransitioning, setDayTransitioning] = useState(false)
 
